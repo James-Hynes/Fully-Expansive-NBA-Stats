@@ -1,3 +1,4 @@
+import requests
 
 def parse_historical_date(input):
     return input.split(' ')[0]
@@ -21,3 +22,20 @@ def delete(char, string):
         return string.replace(char, '')
     except TypeError:
         return string
+
+
+class Stat:
+
+    def __init__(self, url, params):
+        try:
+            self.data = requests.get(url, params).json()['resultSet']['rowSet']
+        except requests.RequestException:
+            self.data = None
+
+    def get(self, index):
+        try:
+            return self.data[index]
+        except AttributeError:
+            return None
+        except KeyError:
+            return None
